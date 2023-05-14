@@ -45,8 +45,6 @@ class Settings(BaseSettings):
     YANDEX_AUTHORIZE_URL: str  = Field('https://oauth.yandex.ru/authorize', env='YANDEX_AUTHORIZE_URL')
     YANDEX_API_BASE_URL: str  = Field('https://login.yandex.ru/info', env='YANDEX_API_BASE_URL')
 
-
-
     @property
     def SQLALCHEMY_DATABASE_URI(self):
         return f"postgresql://{self.username}:{self.password}@{self.host}:{self.port}/{self.dbname}"

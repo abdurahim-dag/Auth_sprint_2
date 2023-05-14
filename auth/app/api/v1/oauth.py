@@ -1,31 +1,30 @@
-from flask import url_for, render_template, redirect, abort
-from flask_restx import Resource
-from flask_restx import Namespace
-from flask import request
-from app.utils import check_profile_id, check_profile_login, check_profile_email
-from app.services.oauth import oauth as service
-from authlib.integrations.flask_client.apps import FlaskOAuth2App
-oauth = Namespace('oauth', 'API for accounting endpoints.' )
 import uuid
-from app.services.db import user_add, user_get_by_email_nickname, add_model
-from app.models import UserSocial
-from app.schemas import UserSocialSchema
-from app.services.db import accounting
+
+from authlib.integrations.flask_client.apps import FlaskOAuth2App
+from flask import abort
+from flask import current_app
+from flask import request
+from flask import url_for
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import create_refresh_token
 from flask_jwt_extended import decode_token
-from flask_jwt_extended import get_jwt
-from flask_jwt_extended import get_jwt_identity
-from flask_jwt_extended import jwt_required
-from flask import current_app
+from flask_restx import Namespace
+from flask_restx import Resource
+
+from app.models import UserSocial
+from app.services.db import accounting
+from app.services.db import add_model
 from app.services.db import save_jti
-from app.services.db import user_get_by_email
+from app.services.db import user_add
+from app.services.db import user_get_by_email_nickname
+from app.services.oauth import oauth as service
 from app.utils import response_generate
 
 
+oauth = Namespace('oauth', 'API for accounting endpoints.' )
+
 parser = oauth.parser()
 parser.add_argument('social', type=str, required=True)
-
 
 
 @oauth.route('/login')
@@ -37,6 +36,7 @@ class Login(Resource):
         social = args['social']
         redirect_uri = url_for('api.oauth_authorize', social=social, _external=True)
         return service.create_client(social).authorize_redirect(redirect_uri)
+
 
 @oauth.route('/authorize')
 class Authorize(Resource):
