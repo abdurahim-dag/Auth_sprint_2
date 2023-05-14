@@ -1,0 +1,19 @@
+alembic revision --autogenerate -m "initial migration"
+
+# миграция
+alembic upgrade head
+alembic upgrade <ae1> <-- часть uuid
+
+#понижение до 0
+alembic downgrade base
+alembic downgrade -1
+
+# создать миграцию
+alembic revision -m "create account table"
+
+# получить информацию
+alembic current
+
+
+ssh-keygen -t rsa -b 4096 -m PEM -f private.key
+openssl rsa -in private.key -pubout -outform PEM -out public.key

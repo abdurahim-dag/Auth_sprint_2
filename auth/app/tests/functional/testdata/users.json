@@ -1,0 +1,8 @@
+{
+  "users": [
+    {"nickname": "user", "email": "user@email", "password": "password", "status": true}
+  ],
+  "admins": [
+    {"nickname": "admin", "email": "admin@email", "password": "topsecret", "status": true}
+  ]
+}
