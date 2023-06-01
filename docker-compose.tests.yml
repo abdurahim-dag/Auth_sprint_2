@@ -60,8 +60,81 @@ services:
     entrypoint: >
       /bin/bash -c "pytest /functional"    
 
+  auth-tests:
+    build:
+      context: ./auth
+      dockerfile: Dockerfile.tests
+    container_name: auth-tests
+    env_file: .env.dev
+    volumes:
+      - ./auth/app:/app
+    entrypoint: /run-test.sh
+    networks:
+      - test-net
+
+  auth:
+    container_name: auth
+    build:
+      context: ./auth
+    depends_on:
+      auth-db:
+        condition: service_healthy
+      auth-redis:
+        condition: service_healthy
+    env_file: .env.dev
+    expose:
+      - "5000"
+    ports:
+      - "5000:5000"
+    volumes:
+      - dev-secret-auth:/secret
+    networks:
+      - test-net
+
+  auth-db:
+    container_name: auth-db
+    build: ./auth-db
+    environment:
+      POSTGRES_DB: ${AUTH_DB_NAME}
+      POSTGRES_USER: ${AUTH_DB_USER}
+      POSTGRES_PASSWORD: ${AUTH_DB_PASSWORD}
+    expose:
+      - "5432"
+    ports:
+      - "5433:5432"
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "app", "-d", "movies_auth"]
+      interval: 5s
+      retries: 5
+    restart: unless-stopped
+    volumes:
+      - dev-pg-db-auth:/var/lib/postgresql/data
+    networks:
+      - test-net
+
+  auth-redis:
+    image: redis
+    container_name: auth-redis
+    hostname: auth-redis
+    command: redis-server
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 30s
+      retries: 50
+    expose:
+      - "6379"
+    ports:
+      - "6380:6379"
+    networks:
+      - test-net
+    restart: unless-stopped
+
 volumes:
   dev-es-data-test-01:
+  dev-secret-auth-test-01:
+  dev-pg-db-auth:
+  dev-secret-auth:
 
 networks:
   test-net:

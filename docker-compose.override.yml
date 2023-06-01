@@ -53,11 +53,17 @@ services:
       - "8081:8080"
     restart: always
 
-#  redis-mv:
-#    ports:
-#      - "6369:6379"
+  auth:
+    env_file: .env.dev
+    volumes:
+      - dev-secret-auth:/secret
+
+  auth-db:
+    volumes:
+      - dev-pg-db-auth:/var/lib/postgresql/data
 
 volumes:
   dev-pg-db-movie:
   dev-pg-db-auth:
   dev-es-data01:
+  dev-secret-auth:

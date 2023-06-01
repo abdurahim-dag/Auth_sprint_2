@@ -59,6 +59,15 @@ services:
       - "80"
     restart: always
 
+  auth:
+    env_file: .env.prod
+    volumes:
+      - secret-auth:/secret
+
+  auth-db:
+    volumes:
+      - pg-data-auth:/var/lib/postgresql/data
+
 
 volumes:
   pg-data-movie:
@@ -66,3 +75,4 @@ volumes:
   app-static:
   app-media:
   es-data01:
+  secret-auth:

@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 until python manage.py check --database default
 do
     echo "DB not online!"

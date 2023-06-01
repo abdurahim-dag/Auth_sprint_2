@@ -131,6 +131,7 @@ dmypy.json
 *.csv
 .env.prod
 .env.dev
+.env
 private_key.pem
 private.key
 private.pem

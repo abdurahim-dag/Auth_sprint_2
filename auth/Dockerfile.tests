@@ -4,8 +4,8 @@ WORKDIR /app
 
 COPY ./requirements.txt .
 COPY ./requirements.test.txt .
+COPY ./run-test.sh /
 
 RUN  pip install --upgrade pip \
      && pip install -r requirements.txt --no-cache-dir \
      && pip install -r requirements.test.txt --no-cache-dir \
-

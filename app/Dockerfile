@@ -2,6 +2,8 @@ FROM python:3.10 as base
 
 WORKDIR /app
 
+COPY requirements.txt .
+
 FROM base as prod
 
 ARG appuser
@@ -22,8 +24,6 @@ COPY --chown=$appuser . .
 ENTRYPOINT ["/app/run.sh"]
 
 FROM base as dev
-
-COPY requirements.txt .
 
 RUN  pip install --upgrade pip \
      && pip install -r requirements.txt --no-cache-dir
