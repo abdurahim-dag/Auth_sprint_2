@@ -41,7 +41,7 @@ class Signup(Resource):
         #  nickname или email уже есть, и другие ошибки валидации.
         try:
             user_add(nickname, email, password)
-        except IntegrityError:
+        except IntegrityError as e:
             return {'message': Messages.login_exist}, HTTPStatus.NOT_FOUND
         except ValueError as e:
             return {'message': str(e)}, HTTPStatus.NOT_FOUND

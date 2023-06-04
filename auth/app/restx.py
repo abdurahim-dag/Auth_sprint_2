@@ -13,10 +13,10 @@ def register_models_account(api):
 
 def register_models_user(api):
     api.model('UserNew', {
-        'nickname': fields.String,
-        'email': fields.String,
+        'nickname': fields.String(required=True),
+        'email': fields.String(required=True),
         'status': fields.Boolean,
-        'password': fields.String,
+        'password': fields.String(required=True),
     })
     api.model('UserPassword', {
         'password': fields.String
