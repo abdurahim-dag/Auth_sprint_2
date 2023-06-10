@@ -69,4 +69,10 @@ class Settings(BaseSettings):
     def redis_conn_str(self) -> str:
         return f"redis://{self.REDIS_HOST}:{self.REDIS_PORT}"
 
+    # Limiter
+    RATELIMIT_STORAGE_URI = redis_conn_str
+    RATELIMIT_STRATEGY = 'fixed-window'
+    RATELIMIT_HEADERS_ENABLED = True
+
+
 settings: Settings | None = None

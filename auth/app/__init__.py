@@ -4,6 +4,7 @@ import logging
 
 import redis
 from flask import Flask
+from flask import make_response, render_template, jsonify
 from flask import Response
 from flask_restx import Api
 from sqlalchemy import create_engine
@@ -16,13 +17,16 @@ from app.services.jwt import jwt
 from authlib.integrations.flask_client import OAuth
 from app.services.oauth import init_oauth
 
+from app.limiter import limiter_register
 
-def create_app(test_config=None):
+def create_app():
     config.settings = config.Settings()
 
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_object(config.settings)
+
+    limiter_register(app)
 
     db.engine = create_engine(app.config['SQLALCHEMY_DATABASE_URI'])
     db.engine.execution_options(autocommit=False)
@@ -54,6 +58,13 @@ def create_app(test_config=None):
     def all_exception_handler(error: HTTPException):
         res = {error.name: error.description}
         return Response(status=error.code, mimetype="application/json", response=json.dumps(res))
+
+    # @app.errorhandler(Exception)
+    # def handle_internal_server_error(error):
+    #     #logging.exception(error)
+    #     response = jsonify({'error': 'Внутренняя ошибка сервера'})
+    #     response.status_code = 500
+    #     return response
 
     jwt._set_error_handler_callbacks(api)
 
