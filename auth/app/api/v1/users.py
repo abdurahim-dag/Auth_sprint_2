@@ -17,6 +17,8 @@ from app.services.db import user_add
 from app.services.db import user_change_password
 from app.services.rbac import role_required
 
+from app.limiter import limiter
+
 
 user = Namespace('users', 'API for accounting endpoints.' )
 
@@ -25,6 +27,7 @@ register_models_user(user)
 
 @user.route('/signup')
 class Signup(Resource):
+    decorators = [limiter.limit("20/minute")]
 
     @user.expect(user.models['UserNew'])
     @user.doc(responses={HTTPStatus.OK.value: 'Success'})
@@ -51,6 +54,7 @@ class Signup(Resource):
 
 @user.route('/confirm_email/<uuid:token>')
 class ConfirmEmail(Resource):
+    decorators = [limiter.limit("20/minute")]
 
     @user.doc(params={'token': 'An UUID'})
     @user.doc(responses={HTTPStatus.OK.value: 'Success'})

@@ -4,7 +4,7 @@ import logging
 
 import redis
 from flask import Flask
-from flask import make_response, render_template, jsonify
+from flask import make_response, request, jsonify
 from flask import Response
 from flask_restx import Api
 from sqlalchemy import create_engine
@@ -18,6 +18,10 @@ from authlib.integrations.flask_client import OAuth
 from app.services.oauth import init_oauth
 
 from app.limiter import limiter_register
+from app.tracer import set_instrument_app
+
+from flask import Flask
+
 
 def create_app():
     config.settings = config.Settings()
@@ -30,7 +34,7 @@ def create_app():
 
     db.engine = create_engine(app.config['SQLALCHEMY_DATABASE_URI'])
     db.engine.execution_options(autocommit=False)
-    db.redis = redis.Redis(host=app.config['REDIS_HOST'], port=app.config['REDIS_PORT'], decode_responses=True)
+    db.redis = redis.Redis(host=config.settings.redis_host, port=config.settings.redis_port, decode_responses=True)
 
     jwt.init_app(app)
     init_oauth(app)
@@ -59,17 +63,25 @@ def create_app():
         res = {error.name: error.description}
         return Response(status=error.code, mimetype="application/json", response=json.dumps(res))
 
-    # @app.errorhandler(Exception)
-    # def handle_internal_server_error(error):
-    #     #logging.exception(error)
-    #     response = jsonify({'error': 'Внутренняя ошибка сервера'})
-    #     response.status_code = 500
-    #     return response
+    @app.errorhandler(Exception)
+    def handle_internal_server_error(error):
+        logging.exception(error)
+        response = jsonify({'error': str(error)})
+        response.status_code = 500
+        return response
 
     jwt._set_error_handler_callbacks(api)
 
     @jwt.unauthorized_loader
     def unauthorized(msg):
         return {}, http.HTTPStatus.UNAUTHORIZED
+
+    @app.before_request
+    def before_request():
+        request_id = request.headers.get('X-Request-Id')
+        if not request_id:
+            raise RuntimeError('request id is required')
+
+    set_instrument_app(app)
 
     return app

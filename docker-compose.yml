@@ -107,3 +107,10 @@ services:
     ports:
       - "80:80"
     restart: always
+
+  jaegertracing:
+    container_name: jaegertracing
+    image: jaegertracing/all-in-one:latest
+    ports:
+      - "6831:6831/udp"
+      - "16686:16686"

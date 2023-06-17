@@ -20,6 +20,7 @@ from app.services.db import user_get_by_email_nickname
 from app.services.oauth import oauth as service
 from app.utils import response_generate
 
+from app.limiter import limiter
 
 oauth = Namespace('oauth', 'API for accounting endpoints.' )
 
@@ -29,6 +30,7 @@ parser.add_argument('social', type=str, required=True)
 
 @oauth.route('/login')
 class Login(Resource):
+    decorators = [limiter.limit("20/minute")]
 
     @oauth.expect(parser)
     def get(self):
@@ -40,6 +42,7 @@ class Login(Resource):
 
 @oauth.route('/authorize')
 class Authorize(Resource):
+    decorators = [limiter.limit("20/minute")]
 
     @oauth.expect(parser)
     def get(self):

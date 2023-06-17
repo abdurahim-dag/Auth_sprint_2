@@ -14,14 +14,9 @@ class Settings(BaseSettings):
     email_host: str = Field(..., env='AUTH_EMAIL_HOST')
     email_port: str = Field(..., env='AUTH_EMAIL_PORT')
 
-    EMAIL_SENDER: str = Field(..., env='AUTH_EMAIL_SENDER')
-    EMAIL_PASSWORD: str = Field(..., env='AUTH_EMAIL_PASSWORD')
-    EMAIL_HOST: str = Field(..., env='AUTH_EMAIL_HOST')
-    EMAIL_PORT: str = Field(..., env='AUTH_EMAIL_PORT')
-
-    REDIS_HOST: str = Field(..., env='AUTH_REDIS_HOST')
-    REDIS_PORT: int = Field(6379, env='AUTH_REDIS_PORT')
-    REDIS_DB: int = Field(0, env='AUTH_REDIS_DB')
+    redis_host: str = Field(..., env='AUTH_REDIS_HOST')
+    redis_port: int = Field(6379, env='AUTH_REDIS_PORT')
+    redis_db: int = Field(0, env='AUTH_REDIS_DB')
 
     JWT_COOKIE_HTTPONLY: bool = True
 
@@ -67,12 +62,14 @@ class Settings(BaseSettings):
 
     @property
     def redis_conn_str(self) -> str:
-        return f"redis://{self.REDIS_HOST}:{self.REDIS_PORT}"
+        return f"redis://{self.redis_host}:{self.redis_port}"
 
-    # Limiter
     RATELIMIT_STORAGE_URI = redis_conn_str
     RATELIMIT_STRATEGY = 'fixed-window'
     RATELIMIT_HEADERS_ENABLED = True
+
+    jaeger_agent_host: str  = Field('jaegertracing', env='JAEGER_AGENT_HOST')
+    jaeger_agent_port: int  = Field(6831, env='JAEGER_AGENT_PORT')
 
 
 settings: Settings | None = None

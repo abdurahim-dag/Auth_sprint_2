@@ -24,6 +24,7 @@ from app.utils import response_generate
 
 from app.limiter import limiter
 
+
 account = Namespace('accounts', 'API for accounting endpoints.' )
 
 register_models_account(account)
@@ -31,7 +32,7 @@ register_models_account(account)
 
 @account.route("/login")
 class Login(Resource):
-    decorators = [limiter.limit("2/minute")]
+    decorators = [limiter.limit("20/minute")]
 
     @account.expect(account.models['UserAccount'])
     @account.doc(responses={HTTPStatus.OK.value: 'Success'}, model=account.models['UserLogin'])
