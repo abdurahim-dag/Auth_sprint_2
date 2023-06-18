@@ -48,6 +48,7 @@ services:
       target: dev
     volumes:
       - ./fastapi-solution/src:/app
+      - dev-secret-auth:/secret:ro
     env_file: .env.dev
     ports:
       - "8081:8080"
@@ -58,9 +59,18 @@ services:
     volumes:
       - dev-secret-auth:/secret
 
+  redis:
+    ports:
+      - "6381:6379"
+
+
   auth-db:
     volumes:
       - dev-pg-db-auth:/var/lib/postgresql/data
+
+  auth-redis:
+        ports:
+          - "6380:6379"
 
 volumes:
   dev-pg-db-movie:

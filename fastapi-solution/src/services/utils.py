@@ -34,7 +34,7 @@ class Service(ABC):
     async def get_list(
         self,
         params: ModelParams | Any = None
-    ) -> list[Film | Genre | PersonDetail | None] | None:
+    ) -> list[Film | FilmDetail | Genre | PersonDetail | None] | None:
         """Функция запрашивает список моделей по параметрам запроса."""
         search_query = self.build_search_query(params)
         try:

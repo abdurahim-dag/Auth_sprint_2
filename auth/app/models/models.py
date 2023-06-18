@@ -53,7 +53,9 @@ class User(Base):
         secondary="user_role", back_populates="users"
     )
     user_social: Mapped["UserSocial"] = relationship(
-        back_populates="user"
+        back_populates="user",
+        cascade="all, delete",
+        passive_deletes=True,
     )
 
 

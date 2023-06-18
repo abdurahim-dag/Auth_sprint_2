@@ -11,6 +11,7 @@ from flask_jwt_extended import jwt_required
 from flask_restx import Namespace
 from flask_restx import Resource
 
+from app.limiter import limiter
 from app.models import Messages
 from app.restx import cors_header
 from app.restx import jwt_parser
@@ -21,8 +22,6 @@ from app.services.db import revoke_jtis
 from app.services.db import save_jti
 from app.services.db import user_get_by_email
 from app.utils import response_generate
-
-from app.limiter import limiter
 
 
 account = Namespace('accounts', 'API for accounting endpoints.' )

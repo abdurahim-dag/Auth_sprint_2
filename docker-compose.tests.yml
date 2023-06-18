@@ -32,17 +32,16 @@ services:
       - es01
     volumes:
       - ./fastapi-solution/src:/app
+      - dev-secret-auth:/secret:ro
     networks:
       - test-net
     env_file: .env.dev
-    expose:
-      - "8080"
 
-  redis-mv:
+  redis:
     image: redis
     command: redis-server
-    container_name: redis-mv
-    hostname: redis-mv
+    container_name: redis
+    hostname: redis
     networks:
       - test-net
     expose:

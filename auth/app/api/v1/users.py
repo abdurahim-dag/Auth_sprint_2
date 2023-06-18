@@ -7,6 +7,7 @@ from flask_restx import Namespace
 from flask_restx import Resource
 from sqlalchemy.exc import IntegrityError
 
+from app.limiter import limiter
 from app.models import Messages
 from app.restx import jwt_parser
 from app.restx import register_models_user
@@ -16,8 +17,6 @@ from app.services.db import set_role
 from app.services.db import user_add
 from app.services.db import user_change_password
 from app.services.rbac import role_required
-
-from app.limiter import limiter
 
 
 user = Namespace('users', 'API for accounting endpoints.' )

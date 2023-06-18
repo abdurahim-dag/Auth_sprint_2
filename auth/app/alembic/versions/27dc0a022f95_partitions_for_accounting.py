@@ -33,6 +33,12 @@ def upgrade() -> None:
             
             CREATE TABLE measurement_y2023m06 PARTITION OF accounting_p
                 FOR VALUES FROM ('2023-06-01') TO ('2023-07-01');
+
+            CREATE TABLE measurement_y2023m07 PARTITION OF accounting_p
+                FOR VALUES FROM ('2023-07-01') TO ('2023-08-01');
+
+            CREATE TABLE measurement_y2023m08 PARTITION OF accounting_p
+                FOR VALUES FROM ('2023-08-01') TO ('2023-09-01');
             
             insert into accounting_p
             select * from accounting;

@@ -11,6 +11,7 @@ from flask_jwt_extended import decode_token
 from flask_restx import Namespace
 from flask_restx import Resource
 
+from app.limiter import limiter
 from app.models import UserSocial
 from app.services.db import accounting
 from app.services.db import add_model
@@ -20,7 +21,6 @@ from app.services.db import user_get_by_email_nickname
 from app.services.oauth import oauth as service
 from app.utils import response_generate
 
-from app.limiter import limiter
 
 oauth = Namespace('oauth', 'API for accounting endpoints.' )
 

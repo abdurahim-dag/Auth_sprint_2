@@ -1,7 +1,7 @@
 from .config import OrjsonConfigMixin, UUIDMixin
 from .genre import Genre
 from .person import Person
-
+from pydantic import BaseModel, Field
 
 class Film(UUIDMixin, OrjsonConfigMixin):
     title: str
@@ -16,5 +16,3 @@ class FilmDetail(Film):
     actors: list[Person] = []
     writers: list[Person] = []
     directors: list[Person] = []
-
-

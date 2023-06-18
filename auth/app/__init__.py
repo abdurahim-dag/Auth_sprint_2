@@ -4,23 +4,19 @@ import logging
 
 import redis
 from flask import Flask
-from flask import make_response, request, jsonify
 from flask import Response
+from flask import jsonify
+from flask import request
 from flask_restx import Api
 from sqlalchemy import create_engine
 from werkzeug.exceptions import HTTPException
 
 import app.db
-import app.signals
 from app import config
-from app.services.jwt import jwt
-from authlib.integrations.flask_client import OAuth
-from app.services.oauth import init_oauth
-
 from app.limiter import limiter_register
+from app.services.jwt import jwt
+from app.services.oauth import init_oauth
 from app.tracer import set_instrument_app
-
-from flask import Flask
 
 
 def create_app():

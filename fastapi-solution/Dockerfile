@@ -15,7 +15,7 @@ RUN chmod +x ./start.sh
 FROM base as prod
 
 ARG appuser
-RUN useradd -U $appuser
+RUN useradd -u 1001 -U $appuser
 
 RUN chown $appuser:$appuser -R /app
 

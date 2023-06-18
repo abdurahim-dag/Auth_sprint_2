@@ -17,6 +17,8 @@ class Environments(BaseSettings):
     origins: list[str] =[
             'http://localhost:80',
         ]
+    auth_algorithm: str = Field('RS256', env='AUTH_JWT_ALGORITHM')
+    auth_public_key_path: str = Field('/secret/public.key', env='FAPP_JWT_PUBLIC_KEY_PATH')
 
 
 # Применяем настройки логирования

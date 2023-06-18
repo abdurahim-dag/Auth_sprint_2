@@ -17,7 +17,7 @@
 	docker exec -it etl-movie bash -c "/app/run.sh"
 
 0-start-dev:
-	docker compose --env-file ./.env.dev up -d --no-deps --build
+	docker compose -f docker-compose.yml -f docker-compose.override.yml --env-file ./.env.dev up -d --no-deps --build
 
 0-start-prod:
 	docker compose -f docker-compose.yml -f docker-compose.prod.yml --env-file ./.env.prod up -d

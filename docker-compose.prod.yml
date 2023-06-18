@@ -56,7 +56,9 @@ services:
       target: prod
     env_file: .env.prod
     expose:
-      - "80"
+      - "8080"
+    volumes:
+      - secret-auth:/secret:ro
     restart: always
 
   auth:
