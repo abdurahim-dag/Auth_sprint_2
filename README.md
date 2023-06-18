@@ -29,8 +29,7 @@ https://github.com/abdurahim-dag/Auth_sprint_2
 1. Перейдите в папку решения: cd auth
 2. На основе файла .env.example создайте копию .env
 3. Замените параметры доступа к email в соответствии с вашим сервером почты переменные в .env AUTH_EMAIL_*
-4. Запустите контейнер командой: docker compose --env-file .env up -d --no-deps --build
-5. context: .context:
+4. Запустите контейнер командой(dev): docker compose -f docker-compose.yml -f docker-compose.override.yml --env-file ./.env.dev up -d --no-deps --build 
 5. После первого запуска перезапустите повторно контейнер тестов auth-tests
 6. Создаём супер пользователя, на сервере авторизации: docker exec -it auth bash -c "flask superuser create"
 7. Openapi по пути: auth/api/v1/
